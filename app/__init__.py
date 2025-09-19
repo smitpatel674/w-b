@@ -1,1 +1,1 @@
-# MarketPro Trading Education Platform Backend
+# Wealth Genius Trading Education Platform Backend

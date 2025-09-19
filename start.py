@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Startup script for MarketPro Backend
+Startup script for Wealth Genius Backend
 """
 import uvicorn
 from app.core.config import settings

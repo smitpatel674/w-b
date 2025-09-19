@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database and Email Setup Script for MarketPro Backend
+Database and Email Setup Script for Wealth Genius Backend
 This script helps set up PostgreSQL database and provides Gmail SMTP instructions
 """
 import os
@@ -73,7 +73,7 @@ To use Gmail for sending emails, follow these steps:
    - Go to Google Account settings
    - Security → 2-Step Verification → App passwords
    - Select "Mail" and "Other (Custom name)"
-   - Name it "MarketPro Backend"
+   - Name it "Wealth Genius Backend"
    - Copy the generated 16-character password
 
 3. Update your .env file:
@@ -118,7 +118,7 @@ After installation:
 """)
 
 def main():
-    print("🚀 MarketPro Backend Setup Script")
+    print("🚀 Wealth Genius Backend Setup Script")
     print("="*40)
     
     # Check PostgreSQL

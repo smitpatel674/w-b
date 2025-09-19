@@ -34,12 +34,21 @@ class Settings(BaseSettings):
     stripe_publishable_key: Optional[str] = None
     stripe_webhook_secret: Optional[str] = None
     
+    # Angel One SmartAPI (place in .env)
+    angel_api_key: Optional[str] = None
+    angel_client_id: Optional[str] = None
+    angel_refresh_token: Optional[str] = None
+    angel_feed_token: Optional[str] = None
+    angel_totp_secret: Optional[str] = None
+    angel_password: Optional[str] = None
+    angel_mpin: Optional[str] = None
+
     # Application Settings
     debug: bool = True
     environment: str = "development"
     cors_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]
     api_v1_prefix: str = "/api/v1"
-    project_name: str = "MarketPro Trading Education Platform"
+    project_name: str = "Wealth Genius Trading Education Platform"
     
     class Config:
         env_file = ".env"

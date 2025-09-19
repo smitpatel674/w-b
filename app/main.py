@@ -3,13 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.v1.api import api_router
 from app.database.database import engine
-from app.models import user, course, enrollment, content
+from app.models import user, course, enrollment, content, consultation
 
 # Create database tables
 user.Base.metadata.create_all(bind=engine)
 course.Base.metadata.create_all(bind=engine)
 enrollment.Base.metadata.create_all(bind=engine)
 content.Base.metadata.create_all(bind=engine)
+consultation.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.project_name,
@@ -34,7 +35,7 @@ app.include_router(api_router, prefix=settings.api_v1_prefix)
 @app.get("/")
 def read_root():
     return {
-        "message": "Welcome to MarketPro Trading Education Platform API",
+        "message": "Welcome to Wealth Genius Trading Education Platform API",
         "version": "1.0.0",
         "docs": "/docs"
     }

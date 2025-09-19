@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Dependency Installation Script for MarketPro Backend
+Dependency Installation Script for Wealth Genius Backend
 Installs dependencies step by step to avoid conflicts
 """
 import subprocess
@@ -22,7 +22,7 @@ def run_command(command, description):
         return False
 
 def main():
-    print("🚀 MarketPro Backend - Dependency Installation")
+    print("🚀 Wealth Genius Backend - Dependency Installation")
     print("="*50)
     
     # Check if we're in a virtual environment

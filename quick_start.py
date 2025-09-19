@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Quick Start Script for MarketPro Backend
+Quick Start Script for Wealth Genius Backend
 Gets the backend running quickly with current configuration
 """
 import os
@@ -140,7 +140,7 @@ def start_server():
         print(f"❌ Failed to start server: {e}")
 
 def main():
-    print("🚀 MarketPro Backend - Quick Start")
+    print("🚀 Wealth Genius Backend - Quick Start")
     print("="*40)
     
     # Step 1: Check dependencies

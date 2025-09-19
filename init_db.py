@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database initialization script for MarketPro Backend
+Database initialization script for Wealth Genius Backend
 Creates sample data for development and testing
 """
 import asyncio
@@ -160,7 +160,7 @@ def init_db():
             testimonial1 = Testimonial(
                 user_id=admin_user.id,  # Using admin as placeholder
                 title="Transformed My Trading",
-                content="MarketPro didn't just teach me to trade - they taught me to think like a professional trader. I went from losing money consistently to generating $15K+ monthly profits.",
+                content="Wealth Genius didn't just teach me to trade - they taught me to think like a professional trader. I went from losing money consistently to generating $15K+ monthly profits.",
                 rating=5,
                 is_featured=True,
                 is_approved=True

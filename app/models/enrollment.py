@@ -18,15 +18,20 @@ class Enrollment(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
+    
+    # Direct enrollment form data (for easy access)
+    student_name = Column(String, nullable=False)
+    student_email = Column(String, nullable=False)
+    student_phone = Column(String, nullable=False)
+    student_city = Column(String, nullable=False)
+    course_title = Column(String, nullable=False)
+    course_price = Column(String, nullable=False)
+    
+    # Enrollment status and tracking
     status = Column(Enum(EnrollmentStatus), default=EnrollmentStatus.ACTIVE)
     enrolled_at = Column(DateTime(timezone=True), server_default=func.now())
-    completed_at = Column(DateTime(timezone=True), nullable=True)
-    progress_percentage = Column(Float, default=0.0)
-    certificate_issued = Column(Boolean, default=False)
-    certificate_url = Column(String, nullable=True)
     payment_amount = Column(Float, nullable=False)
     payment_method = Column(String, nullable=True)
-    stripe_payment_intent_id = Column(String, nullable=True)
 
     # Relationships
     user = relationship("User", back_populates="enrollments")

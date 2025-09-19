@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Email Test Script for MarketPro Backend
+Email Test Script for Wealth Genius Backend
 Tests Gmail SMTP configuration
 """
 import os
@@ -48,8 +48,8 @@ def test_email_configuration():
         
         success = send_email(
             to_email=test_email,
-            subject="MarketPro Backend - Email Test",
-            body="This is a test email from MarketPro Backend. If you receive this, your Gmail SMTP configuration is working correctly!"
+            subject="Wealth Genius Backend - Email Test",
+            body="This is a test email from Wealth Genius Backend. If you receive this, your Gmail SMTP configuration is working correctly!"
         )
         
         if success:
@@ -68,7 +68,7 @@ def test_email_configuration():
         return False
 
 def main():
-    print("🚀 MarketPro Backend - Email Test")
+    print("🚀 Wealth Genius Backend - Email Test")
     print("="*40)
     
     if test_email_configuration():

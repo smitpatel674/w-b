@@ -56,9 +56,9 @@ def send_contact_notification_email(inquiry):
 
 def send_welcome_email(user):
     """Send welcome email to new user"""
-    subject = "Welcome to MarketPro Trading Education Platform"
+    subject = "Welcome to Wealth Genius Trading Education Platform"
     body = f"""
-    Welcome to MarketPro, {user.full_name}!
+    Welcome to Wealth Genius, {user.full_name}!
     
     Thank you for joining our trading education platform. We're excited to help you on your journey to becoming a successful trader.
     
@@ -69,7 +69,7 @@ def send_welcome_email(user):
     Get started by exploring our courses and joining our community.
     
     Best regards,
-    The MarketPro Team
+    The Wealth Genius Team
     """
     
     return send_email(user.email, subject, body)
