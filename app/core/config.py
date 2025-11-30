@@ -52,10 +52,7 @@ class Settings(BaseSettings):
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
     environment: str = os.getenv("ENVIRONMENT", "production")
     cors_origins: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://localhost:3000",
-        "https://localhost:5173",
+        "https://wealth-frontend-three.vercel.app",  # Production frontend
     ]
     api_v1_prefix: str = "/api/v1"
     project_name: str = "Wealth Genius Trading Education Platform"
