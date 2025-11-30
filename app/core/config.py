@@ -34,15 +34,14 @@ class Settings(BaseSettings):
     stripe_publishable_key: Optional[str] = None
     stripe_webhook_secret: Optional[str] = None
     
-    # Angel One SmartAPI (place in .env)
+    # Angel One API Configuration
     angel_api_key: Optional[str] = None
     angel_client_id: Optional[str] = None
     angel_refresh_token: Optional[str] = None
     angel_feed_token: Optional[str] = None
     angel_totp_secret: Optional[str] = None
-    angel_password: Optional[str] = None
     angel_mpin: Optional[str] = None
-
+    
     # Application Settings
     debug: bool = True
     environment: str = "development"

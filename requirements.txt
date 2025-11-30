@@ -28,13 +28,6 @@ pillow
 pytest
 pytest-asyncio
 httpx
-
-# Angel One SmartAPI
-smartapi-python
-pyotp
-
-logzero
-websocket
 # Optional Dependencies (uncomment if needed)
 # redis==5.0.1
 # celery==5.3.6

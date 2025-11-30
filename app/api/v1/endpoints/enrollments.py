@@ -11,6 +11,7 @@ from app.models.user import User, UserRole
 from app.models.course import Course
 from app.models.enrollment import Enrollment
 from app.core.security import get_password_hash
+from app.utils.email import send_enrollment_confirmation_email
 
 
 router = APIRouter()
@@ -79,12 +80,41 @@ def submit_enrollment_form(
                 price = float(price_str)
             except ValueError:
                 price = 0.0
+            
+            # Import required enums
+            from app.models.course import CourseLevel, CourseCategory
+            
+            # Create a slug from title
+            slug = form_data.course_title.lower().replace(' ', '-').replace('+', '-plus')
+            
+            # Get or create a default instructor (admin user)
+            default_instructor = db.query(User).filter(User.role == UserRole.ADMIN).first()
+            if not default_instructor:
+                # If no admin exists, get first instructor or create a default
+                default_instructor = db.query(User).filter(User.role == UserRole.INSTRUCTOR).first()
+                if not default_instructor:
+                    # Create a default instructor user if none exists
+                    default_instructor = User(
+                        email="instructor@wealthgenius.com",
+                        username="default_instructor",
+                        full_name="Default Instructor",
+                        hashed_password=get_password_hash("default_password"),
+                        role=UserRole.INSTRUCTOR,
+                        is_active=True
+                    )
+                    db.add(default_instructor)
+                    db.flush()
                 
             course = Course(
                 title=form_data.course_title,
+                slug=slug,
                 description=f"Course enrollment for {form_data.course_title}",
+                level=CourseLevel.BEGINNER,
+                category=CourseCategory.STOCK_MARKET,
+                duration_weeks=4,
                 price=price,
-                is_active=True
+                is_published=True,
+                instructor_id=default_instructor.id
             )
             db.add(course)
             db.flush()
@@ -119,6 +149,21 @@ def submit_enrollment_form(
         
         db.add(enrollment)
         db.commit()
+        
+        # Send confirmation email to customer
+        try:
+            email_sent = send_enrollment_confirmation_email(
+                student_name=form_data.name,
+                student_email=form_data.email,
+                course_title=form_data.course_title,
+                course_price=form_data.course_price,
+                enrollment_id=enrollment.id
+            )
+            if not email_sent:
+                print(f"Warning: Failed to send enrollment confirmation email to {form_data.email}")
+        except Exception as e:
+            print(f"Error sending enrollment confirmation email: {e}")
+            # Don't fail the enrollment if email fails
         
         return EnrollmentFormResponse(
             message=f"Enrollment request submitted successfully for {course.title}! We will contact you soon.",
