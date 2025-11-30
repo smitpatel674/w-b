@@ -178,7 +178,12 @@ def submit_enrollment_form(
             detail="Error creating enrollment. Please try again."
         )
     except Exception as e:
+        # Rollback and log the full exception to stdout so it appears in host logs
         db.rollback()
+        import traceback
+        print("Exception in submit_enrollment_form:", str(e))
+        traceback.print_exc()
+        # Re-raise a generic HTTPException for the client
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error occurred while processing enrollment."

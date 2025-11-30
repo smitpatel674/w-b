@@ -51,11 +51,27 @@ class Settings(BaseSettings):
     # Application Settings
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
     environment: str = os.getenv("ENVIRONMENT", "production")
+    api_v1_prefix: str = "/api/v1"
+    project_name: str = "Wealth Genius Trading Education Platform"
+    
+    # CORS Origins - Default to production frontend. Override via env if needed.
+    # Avoid using List[str] at class level with env parsing to prevent pydantic JSON errors.
     cors_origins: List[str] = [
         "https://wealth-frontend-three.vercel.app",  # Production frontend
     ]
-    api_v1_prefix: str = "/api/v1"
-    project_name: str = "Wealth Genius Trading Education Platform"
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        # Parse CORS_ORIGINS from env after pydantic initialization
+        cors_env = os.getenv("CORS_ORIGINS", "").strip()
+        if cors_env and cors_env != "CORS_ORIGINS":  # Skip if env var is empty or unset placeholder
+            try:
+                # Try JSON array format first: ["https://a.com", "https://b.com"]
+                import json
+                self.cors_origins = json.loads(cors_env)
+            except (json.JSONDecodeError, ValueError):
+                # Fall back to comma-separated: "https://a.com,https://b.com"
+                self.cors_origins = [o.strip() for o in cors_env.split(",") if o.strip()]
     
     class Config:
         env_file = ".env"

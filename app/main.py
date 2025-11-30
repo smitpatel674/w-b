@@ -22,11 +22,16 @@ app = FastAPI(
 # Set up CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    # If no origins are configured (empty list), fall back to allowing all origins
+    # This helps avoid preflight failures if the environment variable isn't parsed
+    # correctly by the deployed environment. For production, narrow this down.
+    allow_origins=settings.cors_origins or ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+print(f"Configured CORS origins: {settings.cors_origins}")
 
 # Include API router
 app.include_router(api_router, prefix=settings.api_v1_prefix)

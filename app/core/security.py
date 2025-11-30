@@ -4,7 +4,11 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Use a hashing scheme that does not depend on the external `bcrypt` package
+# to avoid runtime import/version issues in some deployment environments.
+# If you prefer `bcrypt`, make sure a compatible `bcrypt` wheel is installed
+# and available in the runtime. Changing scheme will affect existing hashes.
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
