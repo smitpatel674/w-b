@@ -54,24 +54,39 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     project_name: str = "Wealth Genius Trading Education Platform"
     
-    # CORS Origins - Default to production frontend. Override via env if needed.
-    # Avoid using List[str] at class level with env parsing to prevent pydantic JSON errors.
-    cors_origins: List[str] = [
-        "https://wealth-frontend-three.vercel.app",  # Production frontend
+    # CORS Origins - store raw env string first to avoid pydantic attempting
+    # to JSON-decode an empty string. We'll convert to a list in __init__.
+    cors_origins: Optional[str] = None
+
+    # Default CORS origins used when no env override is provided
+    _default_cors_origins: List[str] = [
+        "https://wealth-frontend-three.vercel.app",
     ]
 
     def __init__(self, **data):
         super().__init__(**data)
-        # Parse CORS_ORIGINS from env after pydantic initialization
-        cors_env = os.getenv("CORS_ORIGINS", "").strip()
-        if cors_env and cors_env != "CORS_ORIGINS":  # Skip if env var is empty or unset placeholder
+        # Prefer explicit env var if set; fall back to default list
+        cors_env = os.getenv("CORS_ORIGINS")
+        parsed: List[str] = []
+        if cors_env is not None and cors_env.strip() != "" and cors_env != "CORS_ORIGINS":
+            cors_env = cors_env.strip()
             try:
                 # Try JSON array format first: ["https://a.com", "https://b.com"]
                 import json
-                self.cors_origins = json.loads(cors_env)
+
+                val = json.loads(cors_env)
+                if isinstance(val, list):
+                    parsed = [o for o in val if isinstance(o, str) and o.strip()]
             except (json.JSONDecodeError, ValueError):
                 # Fall back to comma-separated: "https://a.com,https://b.com"
-                self.cors_origins = [o.strip() for o in cors_env.split(",") if o.strip()]
+                parsed = [o.strip() for o in cors_env.split(",") if o.strip()]
+
+        # If no valid env provided, use the hard-coded defaults
+        if not parsed:
+            parsed = list(self._default_cors_origins)
+
+        # At runtime, expose `cors_origins` as a list for the rest of the app
+        object.__setattr__(self, "cors_origins", parsed)
     
     class Config:
         env_file = ".env"
