@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: wealth-genius-api
+    env: python
+    plan: free
+    branch: main
+    
+    # Build configuration
+    buildCommand: pip install -r requirements.txt
+    
+    # Start command
+    startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    
+    # Health check
+    healthCheckPath: /health
+    
+    # Environment variables
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: 3.13
+    
+    # Connect to PostgreSQL database
+    # You'll need to create a PostgreSQL database in Render first
+    # Then add DATABASE_URL, SECRET_KEY, and other sensitive values
+    # via Render dashboard environment variables

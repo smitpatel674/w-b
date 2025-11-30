@@ -5,47 +5,58 @@ import os
 
 class Settings(BaseSettings):
     # Database Configuration
-    database_url: str = "postgresql://postgres:root@localhost:5432/wealth"
+    database_url: str = os.getenv(
+        "DATABASE_URL",
+        "postgresql://postgres:root@localhost:5432/wealth"
+    )
     database_test_url: str = "postgresql://postgres:password@localhost:5432/marketpro_test_db"
     
     # Security
-    secret_key: str = "your-secret-key-here-make-it-long-and-random"
+    secret_key: str = os.getenv(
+        "SECRET_KEY",
+        "your-secret-key-here-make-it-long-and-random"
+    )
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 7
     
     # Email Configuration (Gmail)
-    smtp_host: str = "smtp.gmail.com"
-    smtp_port: int = 587
-    smtp_user: str = "your-gmail@gmail.com"
-    smtp_password: str = "your-gmail-app-password"
+    smtp_host: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
+    smtp_port: int = int(os.getenv("SMTP_PORT", 587))
+    smtp_user: str = os.getenv("SMTP_USER", "your-gmail@gmail.com")
+    smtp_password: str = os.getenv("SMTP_PASSWORD", "your-gmail-app-password")
     
     # Redis Configuration
-    redis_url: str = "redis://localhost:6379"
+    redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379")
     
     # AWS Configuration
-    aws_access_key_id: Optional[str] = None
-    aws_secret_access_key: Optional[str] = None
-    aws_region: str = "us-east-1"
-    aws_s3_bucket: str = "marketpro-uploads"
+    aws_access_key_id: Optional[str] = os.getenv("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key: Optional[str] = os.getenv("AWS_SECRET_ACCESS_KEY")
+    aws_region: str = os.getenv("AWS_REGION", "us-east-1")
+    aws_s3_bucket: str = os.getenv("AWS_S3_BUCKET", "marketpro-uploads")
     
     # Stripe Configuration
-    stripe_secret_key: Optional[str] = None
-    stripe_publishable_key: Optional[str] = None
-    stripe_webhook_secret: Optional[str] = None
+    stripe_secret_key: Optional[str] = os.getenv("STRIPE_SECRET_KEY")
+    stripe_publishable_key: Optional[str] = os.getenv("STRIPE_PUBLISHABLE_KEY")
+    stripe_webhook_secret: Optional[str] = os.getenv("STRIPE_WEBHOOK_SECRET")
     
     # Angel One API Configuration
-    angel_api_key: Optional[str] = None
-    angel_client_id: Optional[str] = None
-    angel_refresh_token: Optional[str] = None
-    angel_feed_token: Optional[str] = None
-    angel_totp_secret: Optional[str] = None
-    angel_mpin: Optional[str] = None
+    angel_api_key: Optional[str] = os.getenv("ANGEL_API_KEY")
+    angel_client_id: Optional[str] = os.getenv("ANGEL_CLIENT_ID")
+    angel_refresh_token: Optional[str] = os.getenv("ANGEL_REFRESH_TOKEN")
+    angel_feed_token: Optional[str] = os.getenv("ANGEL_FEED_TOKEN")
+    angel_totp_secret: Optional[str] = os.getenv("ANGEL_TOTP_SECRET")
+    angel_mpin: Optional[str] = os.getenv("ANGEL_MPIN")
     
     # Application Settings
-    debug: bool = True
-    environment: str = "development"
-    cors_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    debug: bool = os.getenv("DEBUG", "False").lower() == "true"
+    environment: str = os.getenv("ENVIRONMENT", "production")
+    cors_origins: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://localhost:3000",
+        "https://localhost:5173",
+    ]
     api_v1_prefix: str = "/api/v1"
     project_name: str = "Wealth Genius Trading Education Platform"
     
